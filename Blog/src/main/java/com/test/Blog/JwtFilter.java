@@ -52,6 +52,11 @@ public class JwtFilter extends OncePerRequestFilter {
                 .getBody();
 
         String email = claims.get("email", String.class);
+        Integer userId = claims.get("user_id", Integer.class);  // Extract user_id
+
+        if (userId != null) {
+            request.setAttribute("user_id", userId);  // Set user_id in request
+        }
         UserDetails userDetails = userService.loadUserByUsername(email);
 
         UsernamePasswordAuthenticationToken authToken =

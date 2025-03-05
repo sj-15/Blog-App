@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.test.Blog.dto.PostDTO;
+import com.test.Blog.dto.UpdatePostDTO;
 import com.test.Blog.models.Posts;
 import com.test.Blog.models.Users;
 import com.test.Blog.repository.PostRepository;
@@ -19,7 +20,11 @@ import com.test.Blog.repository.UserRepository;
 import com.test.Blog.service.GlobalService;
 
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 import javax.crypto.SecretKey;
 
@@ -55,12 +60,68 @@ public class GlobalServiceImpl implements GlobalService {
         post.setPostTitle(pDto.getTitle());
         post.setPostBody(pDto.getBody());
         post.setPublishedBy(user);
-        post.setCreatedOn(new Date());
-        post.setUpdatedOn(new Date());
+        post.setCreatedOn(getFormattedDate(new Date()));
+        post.setUpdatedOn(getFormattedDate(new Date()));
         post.setIsDeleted(false);
 
         postRepository.save(post);
         return "Post published successfully!";
+    }
+    
+    @Override
+    public List<Posts> getAllPosts(){
+    	return postRepository.findAll();
+    }
+    
+    @Override
+    public long getPostCount() {
+    	return postRepository.count();
+    }
+    
+    @Override
+    public List<Posts> getPostByUser(int published_by){
+    	return postRepository.findByPublishedBy_UserId(published_by);
+    }
+    
+    @Override 
+    public String updatePost(UpdatePostDTO updatePostDTO, HttpServletRequest request) {
+    	int userId = (int) request.getAttribute("user_id");
+    	
+    	Optional<Posts> optionalPost = postRepository.findById(updatePostDTO.getPost_id());
+    	
+    	if (optionalPost.isEmpty()) {
+            return "Post not found!";
+        }
+
+        Posts post = optionalPost.get();
+
+        // Ensure that only the author can update the post
+        if (post.getPublishedBy().getUserId() != userId) {
+            return "You are not authorized to update this post!";
+        }
+        
+        post.setPostTitle(updatePostDTO.getTitle());
+        post.setPostBody(updatePostDTO.getBody());
+        
+        postRepository.save(post);
+    	return "Post updated successfully!";
+    }
+    
+    private Date getFormattedDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+       
+        String formattedDate = sdf.format(new Date()); // Format the date as a String
+
+        // Convert formatted string back to Date
+        Date finalDate = null;
+		try {
+			finalDate = sdf.parse(formattedDate);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        return finalDate;
+        
     }
 
     private String extractJwtFromRequest(HttpServletRequest request) {

@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EntitiyHawk {
     public ResponseEntity genericSuccess() {
         Map map = new HashMap();

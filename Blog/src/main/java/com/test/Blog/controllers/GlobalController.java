@@ -2,6 +2,7 @@ package com.test.Blog.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,8 +36,8 @@ public class GlobalController{
     private HttpServletRequest request;
 	
 	@PostMapping("/publish")
-	public String publish(@RequestBody PostDTO postDTO) {
-		return gs.publish(postDTO, request);
+	public ResponseEntity<?> publish(@RequestBody PostDTO postDTO) {
+		return entitiyHawk.genericResponse(gs.publish(postDTO, request));
 	}
 	
 	@GetMapping("/getPost")
@@ -54,9 +55,18 @@ public class GlobalController{
 		return entitiyHawk.genericResponse(gs.getPostByUser(published_by));
 	}
 	
-	
 	@PostMapping("/updatePost")
 	public ResponseEntity<?> updatePost(@RequestBody UpdatePostDTO updatePostDTO){
 		return entitiyHawk.genericResponse(gs.updatePost(updatePostDTO, request));
+	}
+	
+	@GetMapping("/getPost/{postId}")
+	public ResponseEntity<?> getPostById(@PathVariable("postId") int post_id){
+		return entitiyHawk.genericResponse(gs.getPostById(post_id));
+	}
+	
+	@DeleteMapping("/deletePost/{postId}")
+	public ResponseEntity<?> deletePost(@PathVariable int postId){
+		return entitiyHawk.genericResponse(gs.deletePost(postId, request));
 	}
 }

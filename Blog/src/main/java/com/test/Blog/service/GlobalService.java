@@ -14,4 +14,6 @@ public interface GlobalService {
 	public long getPostCount();
 	public List<Posts> getPostByUser(int published_by);
 	public String updatePost(UpdatePostDTO updatePostDTO, HttpServletRequest request);
+	public Posts getPostById(Integer postId);
+	public String deletePost(Integer postId, HttpServletRequest request);
 }

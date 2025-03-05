@@ -17,8 +17,7 @@ import com.test.Blog.models.Posts;
 import com.test.Blog.models.Users;
 import com.test.Blog.repository.PostRepository;
 import com.test.Blog.repository.UserRepository;
-import com.test.Blog.service.GlobalService;
-
+import com.test.Blog.service.GlobalService;import java.awt.PrintGraphics;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -105,6 +104,32 @@ public class GlobalServiceImpl implements GlobalService {
         
         postRepository.save(post);
     	return "Post updated successfully!";
+    }
+    
+    @Override
+    public Posts getPostById(Integer postId) {
+        return postRepository.findById(postId).orElse(null);
+    }
+    
+    @Override
+    public String deletePost(Integer postId, HttpServletRequest request) {
+    	int userId = (int) request.getAttribute("user_id");
+    	
+    	Optional<Posts> optionalPost = postRepository.findById(postId);
+    	
+    	if (optionalPost.isEmpty()) {
+            return "Post not found!";
+        }
+
+        Posts post = optionalPost.get();
+
+        // Ensure that only the author can update the post
+        if (post.getPublishedBy().getUserId() != userId) {
+            return "You are not authorized to update this post!";
+        }
+        
+        postRepository.deleteById(postId);
+    	return "Post deleted successfully!";
     }
     
     private Date getFormattedDate(Date date) {

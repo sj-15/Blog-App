@@ -1,5 +1,6 @@
 package com.test.Blog.models;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -17,13 +18,19 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "posts")
 @NamedQueries({
     @NamedQuery(name = "Posts.findAll", query = "SELECT p FROM Posts p")})
 public class Posts implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,62 +59,6 @@ public class Posts implements Serializable {
 
     public Posts(Integer postId) {
         this.postId = postId;
-    }
-
-    public Integer getPostId() {
-        return postId;
-    }
-
-    public void setPostId(Integer postId) {
-        this.postId = postId;
-    }
-
-    public String getPostTitle() {
-        return postTitle;
-    }
-
-    public void setPostTitle(String postTitle) {
-        this.postTitle = postTitle;
-    }
-
-    public String getPostBody() {
-        return postBody;
-    }
-
-    public void setPostBody(String postBody) {
-        this.postBody = postBody;
-    }
-
-    public Date getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public Date getUpdatedOn() {
-        return updatedOn;
-    }
-
-    public void setUpdatedOn(Date updatedOn) {
-        this.updatedOn = updatedOn;
-    }
-
-    public Boolean getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(Boolean isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    public Users getPublishedBy() {
-        return publishedBy;
-    }
-
-    public void setPublishedBy(Users publishedBy) {
-        this.publishedBy = publishedBy;
     }
 
     @Override

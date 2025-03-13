@@ -24,7 +24,7 @@ public class JWTUtils {
 
     public String createJWTToken(Users user) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("name", user.getUserName());
+        claims.put("name", user.getUsername());
         claims.put("email", user.getEmail());
         claims.put("user_id", user.getUserId());
 

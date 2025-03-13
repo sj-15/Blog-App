@@ -12,7 +12,7 @@ public class PostMapper {
         map.put("title", post.getPostTitle());
         map.put("body", post.getPostBody());
         map.put("created_on",post.getCreatedOn());
-        map.put("created_by", post.getPublishedBy().getUserName());
+        map.put("created_by", post.getPublishedBy().getUsername());
         map.put("last_updated", post.getUpdatedOn());
         return map;
     } 

@@ -1,9 +1,15 @@
 package com.test.Blog.dto;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+@Setter
+@Getter
+@NoArgsConstructor
 public class RegisterUserDTO {
 
     @NotBlank(message = "Email cannot be blank")
@@ -19,33 +25,7 @@ public class RegisterUserDTO {
     @Valid
     private String password;
 
-    public RegisterUserDTO(){}
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-	@Override
+    @Override
 	public String toString() {
 		return "RegisterUserDTO [email=" + email + ", name=" + name + ", password=" + password + "]";
 	}
